@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { collection, doc, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { auth, db } from "../firebase";
 import "./styles/Home.css";
 
 export const Home = () => {
@@ -13,6 +13,11 @@ export const Home = () => {
     getPosts();
   }, []);
 
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, "posts", id));
+    window.location.href = "/";
+  };
+
   return (
     <div className="homePage">
       {postList.map((post) => (
@@ -23,7 +28,9 @@ export const Home = () => {
           <div className="postTextContainer">{post.postText}</div>
           <div className="nameAndDeleteButton">
             <h3>{post.author.username}</h3>
-            <button>Delete</button>
+            {post.author.id === auth.currentUser?.uid && (
+              <button onClick={() => handleDelete(post.id)}>Delete</button>
+            )}
           </div>
         </div>
       ))}
