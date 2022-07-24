@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./styles/Navbar.css";
 
-export const Navbar = () => {
+export const Navbar = ({ isAuth }) => {
   return (
     <nav>
       <Link to="/">
@@ -19,10 +19,17 @@ export const Navbar = () => {
         <FontAwesomeIcon icon={faFilePen} />
         Post
       </Link>
-      <Link to="/login">
-        <FontAwesomeIcon icon={faArrowRightToBracket} />
-        Login
-      </Link>
+      {!isAuth ? (
+        <Link to="/login">
+          <FontAwesomeIcon icon={faArrowRightToBracket} />
+          Login
+        </Link>
+      ) : (
+        <Link to="/logout">
+          <FontAwesomeIcon icon={faArrowRightToBracket} />
+          Logout
+        </Link>
+      )}
     </nav>
   );
 };
